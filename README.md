@@ -3,7 +3,7 @@ AI-Forest-Fire-Detection PFE
 
 # 🌲 **AI-Based Forest Fire Detection Using NASA Satellite Data**
 
-### **Final Year Project – ENSA / AI Specialty – 2025–2026**
+### **Final Year Project –EST / AI Specialty – 2025–2026**
 ## 🚀 **Project Overview**
 
 This project aims to build an **AI-powered early detection and prediction system** for forest fires using **NASA FIRMS satellite data** (MODIS & VIIRS).

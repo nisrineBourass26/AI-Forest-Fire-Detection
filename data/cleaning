@@ -1,0 +1,62 @@
+import pandas as pd
+
+df = pd.read_csv("fires_data.csv")
+
+# ------------------------------
+# 1. Convert coordinates
+# ------------------------------
+df = df[(df['latitude'] >= -90) & (df['latitude'] <= 90)]
+df = df[(df['longitude'] >= -180) & (df['longitude'] <= 180)]
+df['latitude'] = df['latitude'].astype(float)
+df['longitude'] = df['longitude'].astype(float)
+
+# ------------------------------
+# 2. Remove unrealistic brightness temps
+# ------------------------------
+df = df[(df['bright_ti4'] >= 250) & (df['bright_ti4'] <= 400)]
+df = df[(df['bright_ti5'] >= 250) & (df['bright_ti5'] <= 400)]
+
+# ------------------------------
+# 3. Scan & track validity
+# ------------------------------
+df = df[(df['scan'] <= 5) & (df['track'] <= 5)]
+
+# ------------------------------
+# 4. Combine date & time
+# ------------------------------
+df['acq_time'] = df['acq_time'].astype(str).str.zfill(4)
+df['datetime'] = pd.to_datetime(df['acq_date'] + ' ' + df['acq_time'], format='%Y-%m-%d %H%M')
+
+# Extract useful features
+df['month'] = df['datetime'].dt.month
+df['year'] = df['datetime'].dt.year
+df['day_of_year'] = df['datetime'].dt.dayofyear
+df['hour'] = df['datetime'].dt.hour
+
+# ------------------------------
+# 5. Confidence cleaning
+# ------------------------------
+df = df[df['confidence'] != 'l']
+df['confidence_level'] = df['confidence'].map({'n': 1, 'h': 2})
+
+# ------------------------------
+# 6. FRP cleaning & categories
+# ------------------------------
+df = df[df['frp'] >= 0]
+df['frp_category'] = pd.cut(
+    df['frp'],
+    bins=[0, 10, 50, 200, 10000],
+    labels=['low', 'medium', 'high', 'extreme']
+)
+
+# ------------------------------
+# 7. Day/Night
+# ------------------------------
+df['is_night'] = (df['daynight'] == 'N').astype(int)
+
+# ------------------------------
+# SAVE CLEANED DATA
+# ------------------------------
+df.to_csv("fires_cleaned.csv", index=False)
+
+print("Cleaning complete! Rows remaining:", len(df))
