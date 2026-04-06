@@ -149,16 +149,3 @@ The development is divided into 9 phases:
 
 ---
 
-## 🧾 **License**
-
-This project is developed as part of an academic final year project (PFE).
-All rights reserved © 2025–2026.
-
----
-
-If you want, I can also generate:
-✅ an **architecture diagram**
-✅ a **workflow diagram**
-✅ a **"How to run the project" section**
-
-Just tell me **“Add architecture diagram”** or **“Add run instructions”**.
