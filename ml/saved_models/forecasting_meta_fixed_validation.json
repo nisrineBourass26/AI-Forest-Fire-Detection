@@ -1,0 +1,61 @@
+{
+    "target_metrics": {
+        "MAE": "<3 fires/day",
+        "RMSE": "<4 fires/day",
+        "WAPE": "<40%",
+        "sMAPE": "<50%",
+        "R2": "informational only for sparse daily counts"
+    },
+    "validation_fix": "LSTM now uses train/validation/test split. Test set is not used for validation.",
+    "forecast_horizon": 7,
+    "test_days": 30,
+    "validation_days": 30,
+    "lstm_configs_tried": [
+        {
+            "lookback": 30,
+            "units": 48,
+            "dropout": 0.25,
+            "batch_size": 16,
+            "epochs": 120
+        },
+        {
+            "lookback": 45,
+            "units": 64,
+            "dropout": 0.2,
+            "batch_size": 8,
+            "epochs": 150
+        },
+        {
+            "lookback": 60,
+            "units": 64,
+            "dropout": 0.25,
+            "batch_size": 8,
+            "epochs": 150
+        },
+        {
+            "lookback": 30,
+            "units": 64,
+            "dropout": 0.2,
+            "batch_size": 8,
+            "epochs": 150
+        }
+    ],
+    "best_ensemble_weights": {
+        "w_prophet": 0.4,
+        "w_lstm": 0.6,
+        "MAE": 2.2837757400073837,
+        "RMSE": 2.603787351253094,
+        "R2": -0.026316184457955583,
+        "WAPE": 57.60875740559166,
+        "sMAPE": 62.262542622396275
+    },
+    "final_ensemble_metrics": {
+        "label": "Best Weighted Ensemble on Common Dates",
+        "samples": 28,
+        "MAE": 2.2837757400073837,
+        "RMSE": 2.603787351253094,
+        "R2": -0.026316184457955583,
+        "WAPE": 57.60875740559166,
+        "sMAPE": 62.262542622396275
+    }
+}

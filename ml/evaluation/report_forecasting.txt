@@ -1,0 +1,48 @@
+FORECASTING MODEL REPORT
+============================================================
+
+Model architecture:
+Prophet + LSTM + Weighted Ensemble
+
+Dataset:
+Morocco daily wildfire detections
+
+Validation methodology:
+Train -> Validation -> Test split
+The final metrics are calculated on unseen test dates.
+
+Final ensemble metrics:
+------------------------------------------------------------
+MAE   : 2.2838 fires/day
+RMSE  : 2.6038 fires/day
+R²    : -0.0263
+WAPE  : 57.61%
+sMAPE : 62.26%
+
+Final target check for Morocco daily fire detections:
+------------------------------------------------------------
+MAE   target < 3 fires/day : got 2.28
+RMSE  target < 4 fires/day : got 2.60
+WAPE  target < 40%         : got 57.61%
+sMAPE target < 50%         : got 62.26%
+R² informational only      : got -0.0263
+
+Status:
+------------------------------------------------------------
+MAE   : PASS
+RMSE  : PASS
+WAPE  : FAIL
+sMAPE : FAIL
+
+Best ensemble weights:
+------------------------------------------------------------
+Prophet weight : 0.40
+LSTM weight    : 0.60
+
+Saved model files:
+------------------------------------------------------------
+prophet_model_fixed.joblib
+lstm_best_model_fixed.keras
+lstm_best_model_fixed.joblib
+lstm_best_scaler_fixed.joblib
+lstm_best_metadata_fixed.joblib

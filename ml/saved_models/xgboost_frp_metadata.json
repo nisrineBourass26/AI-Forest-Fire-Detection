@@ -1,0 +1,38 @@
+{
+    "model_type": "XGBRegressor",
+    "target": "frp",
+    "target_transformation": "log1p",
+    "features": [
+        "latitude",
+        "longitude",
+        "scan",
+        "track",
+        "brightness",
+        "confidence_level",
+        "hour",
+        "minute",
+        "is_night",
+        "hour_sin",
+        "hour_cos",
+        "lat_lon_interaction",
+        "brightness_scan_ratio",
+        "track_scan_ratio"
+    ],
+    "best_parameters": {
+        "subsample": 0.8,
+        "reg_lambda": 1,
+        "reg_alpha": 0,
+        "n_estimators": 500,
+        "min_child_weight": 3,
+        "max_depth": 8,
+        "learning_rate": 0.05,
+        "gamma": 0,
+        "colsample_bytree": 0.7
+    },
+    "metrics": {
+        "MAE": 6.925912125230201,
+        "MSE": 401.0114386345838,
+        "RMSE": 20.02527000154015,
+        "R2": 0.5840066066342648
+    }
+}
