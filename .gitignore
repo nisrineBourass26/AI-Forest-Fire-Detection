@@ -1,0 +1,86 @@
+# ============================================================
+# AI-Forest-Fire-Detection — .gitignore
+# ============================================================
+
+# ------------------------------------------------------------
+# Generated data files (pipeline outputs — too large for git)
+# ------------------------------------------------------------
+data/firms_raw_*.csv
+data/firms_clean_*.csv
+data/latest_raw_firms.csv
+data/latest_clean_firms.csv
+data/latest_predictions.csv
+data/latest_predictions_world_1day.csv
+data/latest_predictions_with_countries.csv
+data/latest_forecast.csv
+data/forecast_context.csv
+data/prophetData_global.csv
+data/alert_sent_log.json
+data/forecast_recent_raw/*.csv
+
+# ------------------------------------------------------------
+# Saved model files (large binary files — keep local only)
+# ------------------------------------------------------------
+models/saved_models/*.joblib
+models/saved_models/*.keras
+models/saved_models/*.json
+models/saved_models/*.pkl
+
+# ------------------------------------------------------------
+# Training evaluation outputs (generated — not source code)
+# ------------------------------------------------------------
+training/evaluation/*.png
+training/evaluation/*.csv
+training/evaluation/*.txt
+training/evaluation/*.json
+
+# ------------------------------------------------------------
+# Logs
+# ------------------------------------------------------------
+pipeline_log.txt
+*.log
+
+# ------------------------------------------------------------
+# Python
+# ------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ------------------------------------------------------------
+# Virtual environments
+# ------------------------------------------------------------
+venv/
+env/
+.venv/
+.env
+
+# ------------------------------------------------------------
+# IDE and OS files
+# ------------------------------------------------------------
+.vscode/settings.json
+.idea/
+*.suo
+*.user
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ------------------------------------------------------------
+# Jupyter
+# ------------------------------------------------------------
+.ipynb_checkpoints/
+*.ipynb
+
+# ------------------------------------------------------------
+# Database credentials (never commit these)
+# ------------------------------------------------------------
+*.env
+secrets.py
+credentials.py

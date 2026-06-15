@@ -1,0 +1,63 @@
+======================================================================
+GLOBAL FORECASTING REPORT — ForecastingGlobal
+======================================================================
+
+Architecture:
+  Prophet = main forecast (trend + yearly + monthly seasonality)
+  LSTM    = controlled residual correction layer
+  Formula = Prophet + best_alpha * clip(LSTM_residual, -clip, clip)
+
+Best alpha : 0.03
+Best clip  : 3.0
+
+Final metrics (test set):
+  MAE    : 2.3043
+  RMSE   : 2.9466
+  R²     : -0.03788538134436292
+  SMAPE  : 58.79%
+  WAPE   : 54.95%
+  Status : Minimum acceptable
+
+Data notes:
+  - Zero days with avg_confidence=0 treated as missing (interpolated)
+  - Outliers (y>100) are real fire events — NOT capped, handled via log1p
+  - 5 years of global data: 2020-01-01 to 2025-01-01
+
+LSTM features:
+  - residual
+  - day_sin
+  - day_cos
+  - month_sin
+  - month_cos
+  - y_log
+  - prophet_pred_log
+  - avg_frp_log
+  - max_frp_log
+  - avg_confidence_log
+  - night_fire_count_log
+  - residual_roll7_mean
+  - residual_roll14_mean
+  - residual_roll30_mean
+  - residual_roll7_std
+  - residual_roll14_std
+  - y_lag_1
+  - residual_lag_1
+  - prophet_lag_1
+  - y_lag_2
+  - residual_lag_2
+  - prophet_lag_2
+  - y_lag_3
+  - residual_lag_3
+  - prophet_lag_3
+  - y_lag_7
+  - residual_lag_7
+  - prophet_lag_7
+  - y_lag_14
+  - residual_lag_14
+  - prophet_lag_14
+  - y_lag_21
+  - residual_lag_21
+  - prophet_lag_21
+  - y_lag_30
+  - residual_lag_30
+  - prophet_lag_30

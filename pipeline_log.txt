@@ -1,0 +1,783 @@
+
+WORLD 1-DAY NASA FIRMS DOWNLOAD + PREPROCESSING
+Started at: 2026-06-13 18:54:06
+
+Downloading VIIRS_SNPP_NRT for whole world, last 1 day...
+VIIRS_SNPP_NRT: 36718 rows downloaded
+
+Downloading VIIRS_NOAA20_NRT for whole world, last 1 day...
+VIIRS_NOAA20_NRT: 37568 rows downloaded
+
+Downloading MODIS_NRT for whole world, last 1 day...
+MODIS_NRT: 5971 rows downloaded
+
+Final merged shape: (80257, 17)
+   latitude  longitude  bright_ti4  ...          source  brightness bright_t31
+0  23.97212   38.22963      338.59  ...  VIIRS_SNPP_NRT         NaN        NaN
+1  23.97769   38.23113      346.55  ...  VIIRS_SNPP_NRT         NaN        NaN
+2  24.02839   40.47640      320.78  ...  VIIRS_SNPP_NRT         NaN        NaN
+3  25.07974   30.55612      315.38  ...  VIIRS_SNPP_NRT         NaN        NaN
+4  26.25496   32.97200      308.74  ...  VIIRS_SNPP_NRT         NaN        NaN
+
+[5 rows x 17 columns]
+Index(['latitude', 'longitude', 'bright_ti4', 'scan', 'track', 'acq_date',
+       'acq_time', 'satellite', 'instrument', 'confidence', 'version',
+       'bright_ti5', 'frp', 'daynight', 'source', 'brightness', 'bright_t31'],
+      dtype='object')
+
+Saved raw data to: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\firms_raw_world_1day_20260613_1854.csv
+Saved latest raw data to: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\latest_raw_firms.csv
+
+Cleaned shape: (80257, 43)
+   latitude  longitude  ...  brightness_scan_ratio  track_scan_ratio
+0  23.97212   38.22963  ...             806.164747          1.452377
+1  23.97769   38.23113  ...             825.117083          1.452377
+2  24.02839   40.47640  ...             562.770943          1.210524
+3  25.07974   30.55612  ...             700.842887          0.866665
+4  26.25496   32.97200  ...             551.320444          0.767856
+
+[5 rows x 43 columns]
+Clean columns:
+['latitude', 'longitude', 'bright_ti4', 'scan', 'track', 'acq_date', 'acq_time', 'satellite', 'instrument', 'confidence', 'version', 'bright_ti5', 'frp', 'daynight', 'source', 'brightness', 'bright_t31', 'brightness_main', 'brightness_secondary', 'hour', 'minute', 'datetime', 'year', 'month', 'day', 'day_of_year', 'week_of_year', 'is_day', 'is_night', 'confidence_num', 'frp_log', 'frp_per_km2', 'brightness_anomaly', 'bright_t31_anomaly', 'satellite_code', 'season', 'frp_category', 'confidence_level', 'hour_sin', 'hour_cos', 'lat_lon_interaction', 'brightness_scan_ratio', 'track_scan_ratio']
+
+Saved clean data to: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\firms_clean_world_1day_20260613_1854.csv
+Saved latest clean data to: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\latest_clean_firms.csv
+
+NASA FIRMS preprocessing completed successfully.
+Finished at: 2026-06-13 18:54:39
+======================================================================
+WORLD 1-DAY PREDICTION PIPELINE
+======================================================================
+Using clean data: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\firms_clean_world_1day_20260613_1854.csv
+Input shape: (80257, 43)
+Feature matrix shape: (80257, 16)
+
+Loading XGBoost regressor...
+Predicting FRP...
+
+Loading XGBoost classifier...
+Predicting risk level...
+
+Running DBSCAN hotspot clustering...
+Using DBSCAN parameters: eps=0.00148302, min_samples=15
+
+Prediction + clustering done successfully.
+
+Output preview:
+   latitude  longitude   frp  ...  cluster_id prediction_scope  prediction_period
+0  23.97212   38.22963  5.08  ...          -1            World              1 day
+1  23.97769   38.23113  5.08  ...          -1            World              1 day
+2  24.02839   40.47640  3.07  ...          -1            World              1 day
+3  25.07974   30.55612  1.08  ...          -1            World              1 day
+4  26.25496   32.97200  1.72  ...          -1            World              1 day
+
+[5 rows x 9 columns]
+
+Risk distribution:
+predicted_risk
+Moderate    59643
+High        14543
+Low          5834
+Extreme       237
+Name: count, dtype: int64
+
+Cluster summary:
+Total records: 80257
+Clusters found: 993
+Noise points: 31340
+
+Saved predictions to: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\latest_predictions.csv
+Saved backup predictions to: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\latest_predictions_world_1day.csv
+======================================================================
+GLOBAL PROPHET-ONLY FIRE ACTIVITY FORECASTING
+======================================================================
+
+Current forecast_context.csv:
+Rows: 90
+Date range: 2026-03-15 → 2026-06-12
+
+Found latest_clean_firms.csv.
+Updating forecast context using latest clean FIRMS data...
+
+Daily rows extracted from latest_clean_firms.csv:
+          ds      y    avg_frp  max_frp  avg_confidence  night_fire_count
+0 2026-06-13  80257  12.931963  1631.74        60.26551              6858
+
+forecast_context.csv updated with live NASA data.
+Rows: 90
+Date range: 2026-03-16 → 2026-06-13
+
+Loading Prophet forecasting model...
+
+Prophet model loaded successfully.
+
+Forecast horizon: 7
+Operational forecasting model: Prophet only
+Output label: Global Fire Activity Forecast Index
+
+latest_forecast.csv created successfully.
+Saved to: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\latest_forecast.csv
+
+Forecast preview:
+          ds  ...               generated_at
+0 2026-06-14  ... 2026-06-13 18:55:04.324662
+1 2026-06-15  ... 2026-06-13 18:55:04.324662
+2 2026-06-16  ... 2026-06-13 18:55:04.324662
+3 2026-06-17  ... 2026-06-13 18:55:04.324662
+4 2026-06-18  ... 2026-06-13 18:55:04.324662
+5 2026-06-19  ... 2026-06-13 18:55:04.324662
+6 2026-06-20  ... 2026-06-13 18:55:04.324662
+
+[7 rows x 10 columns]
+
+DONE.
+Forecast context: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\forecast_context.csv
+Latest forecast: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\latest_forecast.csv
+Loading prediction CSV...
+Loaded 80257 rows.
+Rows after cleaning for DB: 80257
+Connecting to PostgreSQL...
+Connected successfully.
+Checking PostGIS extension...
+Clearing old data from fire_predictions...
+Inserting latest prediction batch into fire_predictions table...
+Data inserted successfully.
+Creating geometry column...
+Updating geometry values...
+Creating indexes...
+All latest world 1-day predictions successfully inserted into PostgreSQL/PostGIS.
+
+WORLD 1-DAY FIRE DETECTION + PROPHET FORECASTING PIPELINE
+Started at: 2026-06-13 18:54:02
+
+======================================================================
+STEP 1 - Download and preprocess NASA FIRMS world data
+======================================================================
+
+STEP 1 - Download and preprocess NASA FIRMS world data completed successfully.
+
+======================================================================
+STEP 2 - Run AI fire risk prediction and hotspot clustering
+======================================================================
+
+STEP 2 - Run AI fire risk prediction and hotspot clustering completed successfully.
+
+======================================================================
+STEP 3 - Generate 7-day global Prophet fire activity forecast
+======================================================================
+
+STEP 3 - Generate 7-day global Prophet fire activity forecast completed successfully.
+
+======================================================================
+STEP 4 - Insert latest fire predictions into PostgreSQL/PostGIS
+======================================================================
+
+STEP 4 - Insert latest fire predictions into PostgreSQL/PostGIS completed successfully.
+
+======================================================================
+Pipeline completed.
+Finished at: 2026-06-13 18:55:18
+======================================================================
+
+Generated outputs:
+ - data/latest_predictions.csv
+ - data/latest_forecast.csv
+ - PostgreSQL table (if available)
+
+WORLD 1-DAY NASA FIRMS DOWNLOAD + PREPROCESSING
+Started at: 2026-06-14 18:22:53
+
+Downloading VIIRS_SNPP_NRT for whole world, last 1 day...
+VIIRS_SNPP_NRT: 30334 rows downloaded
+
+Downloading VIIRS_NOAA20_NRT for whole world, last 1 day...
+VIIRS_NOAA20_NRT: 30002 rows downloaded
+
+Downloading MODIS_NRT for whole world, last 1 day...
+MODIS_NRT: 8025 rows downloaded
+
+Final merged shape: (68361, 17)
+   latitude  longitude  bright_ti4  ...          source  brightness bright_t31
+0  54.61114  160.30449      367.00  ...  VIIRS_SNPP_NRT         NaN        NaN
+1  54.61117  160.29204      367.00  ...  VIIRS_SNPP_NRT         NaN        NaN
+2  54.61222  160.30788      367.00  ...  VIIRS_SNPP_NRT         NaN        NaN
+3  54.61277  160.29030      356.86  ...  VIIRS_SNPP_NRT         NaN        NaN
+4  67.27565   83.21352      331.41  ...  VIIRS_SNPP_NRT         NaN        NaN
+
+[5 rows x 17 columns]
+Index(['latitude', 'longitude', 'bright_ti4', 'scan', 'track', 'acq_date',
+       'acq_time', 'satellite', 'instrument', 'confidence', 'version',
+       'bright_ti5', 'frp', 'daynight', 'source', 'brightness', 'bright_t31'],
+      dtype='object')
+
+Saved raw data to: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\firms_raw_world_1day_20260614_1822.csv
+Saved latest raw data to: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\latest_raw_firms.csv
+
+Cleaned shape: (68361, 43)
+   latitude  longitude  ...  brightness_scan_ratio  track_scan_ratio
+0  54.61114  160.30449  ...             991.889211          1.567563
+1  54.61117  160.29204  ...             991.889211          1.567563
+2  54.61222  160.30788  ...             991.889211          1.567563
+3  54.61277  160.29030  ...             964.483880          1.567563
+4  67.27565   83.21352  ...             453.985679          1.041094
+
+[5 rows x 43 columns]
+Clean columns:
+['latitude', 'longitude', 'bright_ti4', 'scan', 'track', 'acq_date', 'acq_time', 'satellite', 'instrument', 'confidence', 'version', 'bright_ti5', 'frp', 'daynight', 'source', 'brightness', 'bright_t31', 'brightness_main', 'brightness_secondary', 'hour', 'minute', 'datetime', 'year', 'month', 'day', 'day_of_year', 'week_of_year', 'is_day', 'is_night', 'confidence_num', 'frp_log', 'frp_per_km2', 'brightness_anomaly', 'bright_t31_anomaly', 'satellite_code', 'season', 'frp_category', 'confidence_level', 'hour_sin', 'hour_cos', 'lat_lon_interaction', 'brightness_scan_ratio', 'track_scan_ratio']
+
+Saved clean data to: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\firms_clean_world_1day_20260614_1822.csv
+Saved latest clean data to: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\latest_clean_firms.csv
+
+NASA FIRMS preprocessing completed successfully.
+Finished at: 2026-06-14 18:23:20
+C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\scripts\prediction_pipeline.py:76: DtypeWarning: Columns (9) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(DATA_PATH)
+======================================================================
+WORLD 1-DAY PREDICTION PIPELINE
+======================================================================
+Using clean data: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\firms_clean_world_1day_20260614_1822.csv
+Input shape: (68361, 43)
+Feature matrix shape: (68361, 16)
+
+Loading XGBoost regressor...
+Predicting FRP...
+
+Loading XGBoost classifier...
+Predicting risk level...
+
+Running DBSCAN hotspot clustering...
+Using DBSCAN parameters: eps=0.00148302, min_samples=15
+
+Prediction + clustering done successfully.
+
+Output preview:
+   latitude  longitude    frp  ...  cluster_id prediction_scope  prediction_period
+0  54.61114  160.30449  28.39  ...          -1            World              1 day
+1  54.61117  160.29204  48.22  ...          -1            World              1 day
+2  54.61222  160.30788  28.39  ...          -1            World              1 day
+3  54.61277  160.29030  23.98  ...          -1            World              1 day
+4  67.27565   83.21352   5.42  ...           0            World              1 day
+
+[5 rows x 9 columns]
+
+Risk distribution:
+predicted_risk
+Moderate    51016
+High        11084
+Low          6091
+Extreme       170
+Name: count, dtype: int64
+
+Cluster summary:
+Total records: 68361
+Clusters found: 919
+Noise points: 28996
+
+Saved predictions to: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\latest_predictions.csv
+Saved backup predictions to: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\latest_predictions_world_1day.csv
+======================================================================
+GLOBAL PROPHET-ONLY FIRE ACTIVITY FORECASTING
+======================================================================
+
+Current forecast_context.csv:
+Rows: 90
+Date range: 2026-03-16 → 2026-06-13
+
+Found latest_clean_firms.csv.
+Updating forecast context using latest clean FIRMS data...
+
+Daily rows extracted from latest_clean_firms.csv:
+          ds      y    avg_frp  max_frp  avg_confidence  night_fire_count
+0 2026-06-14  68361  11.914893  2222.84       60.187153              4905
+
+forecast_context.csv updated with live NASA data.
+Rows: 90
+Date range: 2026-03-17 → 2026-06-14
+
+Loading Prophet forecasting model...
+
+Prophet model loaded successfully.
+
+Forecast horizon: 7
+Operational forecasting model: Prophet only
+Output label: Global Fire Activity Forecast Index
+
+latest_forecast.csv created successfully.
+Saved to: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\latest_forecast.csv
+
+Forecast preview:
+          ds  ...               generated_at
+0 2026-06-15  ... 2026-06-14 18:23:57.122473
+1 2026-06-16  ... 2026-06-14 18:23:57.122473
+2 2026-06-17  ... 2026-06-14 18:23:57.122473
+3 2026-06-18  ... 2026-06-14 18:23:57.122473
+4 2026-06-19  ... 2026-06-14 18:23:57.122473
+5 2026-06-20  ... 2026-06-14 18:23:57.122473
+6 2026-06-21  ... 2026-06-14 18:23:57.122473
+
+[7 rows x 10 columns]
+
+DONE.
+Forecast context: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\forecast_context.csv
+Latest forecast: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\latest_forecast.csv
+Loading prediction CSV...
+Loaded 68361 rows.
+Rows after cleaning for DB: 68361
+Connecting to PostgreSQL...
+Connected successfully.
+Checking PostGIS extension...
+Clearing old data from fire_predictions...
+Inserting latest prediction batch into fire_predictions table...
+Data inserted successfully.
+Creating geometry column...
+Updating geometry values...
+Creating indexes...
+All latest world 1-day predictions successfully inserted into PostgreSQL/PostGIS.
+
+WORLD 1-DAY FIRE DETECTION + PROPHET FORECASTING PIPELINE
+Started at: 2026-06-14 18:22:47
+
+======================================================================
+STEP 1 - Download and preprocess NASA FIRMS world data
+======================================================================
+
+STEP 1 - Download and preprocess NASA FIRMS world data completed successfully.
+
+======================================================================
+STEP 2 - Run AI fire risk prediction and hotspot clustering
+======================================================================
+
+STEP 2 - Run AI fire risk prediction and hotspot clustering completed successfully.
+
+======================================================================
+STEP 3 - Generate 7-day global Prophet fire activity forecast
+======================================================================
+
+STEP 3 - Generate 7-day global Prophet fire activity forecast completed successfully.
+
+======================================================================
+STEP 4 - Insert latest fire predictions into PostgreSQL/PostGIS
+======================================================================
+
+STEP 4 - Insert latest fire predictions into PostgreSQL/PostGIS completed successfully.
+
+======================================================================
+Pipeline completed.
+Finished at: 2026-06-14 18:24:16
+======================================================================
+
+Generated outputs:
+ - data/latest_predictions.csv
+ - data/latest_forecast.csv
+ - PostgreSQL table (if available)
+
+WORLD 1-DAY FIRE DETECTION + PROPHET FORECASTING PIPELINE
+Started at: 2026-06-14 18:54:01
+
+======================================================================
+STEP 1 - Download and preprocess NASA FIRMS world data
+======================================================================
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\scripts\run_pipeline.py", line 77, in <module>
+^C
+WORLD 1-DAY NASA FIRMS DOWNLOAD + PREPROCESSING
+Started at: 2026-06-14 22:04:26
+
+Downloading VIIRS_SNPP_NRT for whole world, last 1 day...
+VIIRS_SNPP_NRT: 32612 rows downloaded
+
+Downloading VIIRS_NOAA20_NRT for whole world, last 1 day...
+VIIRS_NOAA20_NRT: 32364 rows downloaded
+
+Downloading MODIS_NRT for whole world, last 1 day...
+MODIS_NRT: 8759 rows downloaded
+
+Final merged shape: (73735, 17)
+   latitude  longitude  bright_ti4  ...          source  brightness bright_t31
+0  54.61114  160.30449      367.00  ...  VIIRS_SNPP_NRT         NaN        NaN
+1  54.61117  160.29204      367.00  ...  VIIRS_SNPP_NRT         NaN        NaN
+2  54.61222  160.30788      367.00  ...  VIIRS_SNPP_NRT         NaN        NaN
+3  54.61277  160.29030      356.86  ...  VIIRS_SNPP_NRT         NaN        NaN
+4  67.27565   83.21352      331.41  ...  VIIRS_SNPP_NRT         NaN        NaN
+
+[5 rows x 17 columns]
+Index(['latitude', 'longitude', 'bright_ti4', 'scan', 'track', 'acq_date',
+       'acq_time', 'satellite', 'instrument', 'confidence', 'version',
+       'bright_ti5', 'frp', 'daynight', 'source', 'brightness', 'bright_t31'],
+      dtype='object')
+
+Saved raw data to: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\firms_raw_world_1day_20260614_2204.csv
+Saved latest raw data to: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\latest_raw_firms.csv
+
+Cleaned shape: (73735, 43)
+   latitude  longitude  ...  brightness_scan_ratio  track_scan_ratio
+0  54.61114  160.30449  ...             991.889211          1.567563
+1  54.61117  160.29204  ...             991.889211          1.567563
+2  54.61222  160.30788  ...             991.889211          1.567563
+3  54.61277  160.29030  ...             964.483880          1.567563
+4  67.27565   83.21352  ...             453.985679          1.041094
+
+[5 rows x 43 columns]
+Clean columns:
+['latitude', 'longitude', 'bright_ti4', 'scan', 'track', 'acq_date', 'acq_time', 'satellite', 'instrument', 'confidence', 'version', 'bright_ti5', 'frp', 'daynight', 'source', 'brightness', 'bright_t31', 'brightness_main', 'brightness_secondary', 'hour', 'minute', 'datetime', 'year', 'month', 'day', 'day_of_year', 'week_of_year', 'is_day', 'is_night', 'confidence_num', 'frp_log', 'frp_per_km2', 'brightness_anomaly', 'bright_t31_anomaly', 'satellite_code', 'season', 'frp_category', 'confidence_level', 'hour_sin', 'hour_cos', 'lat_lon_interaction', 'brightness_scan_ratio', 'track_scan_ratio']
+
+Saved clean data to: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\firms_clean_world_1day_20260614_2204.csv
+Saved latest clean data to: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\latest_clean_firms.csv
+
+NASA FIRMS preprocessing completed successfully.
+Finished at: 2026-06-14 22:05:12
+C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\scripts\prediction_pipeline.py:76: DtypeWarning: Columns (9) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(DATA_PATH)
+======================================================================
+WORLD 1-DAY PREDICTION PIPELINE
+======================================================================
+Using clean data: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\firms_clean_world_1day_20260614_2204.csv
+Input shape: (73735, 43)
+Feature matrix shape: (73735, 16)
+
+Loading XGBoost regressor...
+Predicting FRP...
+
+Loading XGBoost classifier...
+Predicting risk level...
+
+Running DBSCAN hotspot clustering...
+Using DBSCAN parameters: eps=0.00148302, min_samples=15
+
+Prediction + clustering done successfully.
+
+Output preview:
+   latitude  longitude    frp  ...  cluster_id prediction_scope  prediction_period
+0  54.61114  160.30449  28.39  ...           0            World              1 day
+1  54.61117  160.29204  48.22  ...           0            World              1 day
+2  54.61222  160.30788  28.39  ...           0            World              1 day
+3  54.61277  160.29030  23.98  ...           0            World              1 day
+4  67.27565   83.21352   5.42  ...           1            World              1 day
+
+[5 rows x 9 columns]
+
+Risk distribution:
+predicted_risk
+Moderate    54033
+High        11650
+Low          7861
+Extreme       191
+Name: count, dtype: int64
+
+Cluster summary:
+Total records: 73735
+Clusters found: 975
+Noise points: 31878
+
+Saved predictions to: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\latest_predictions.csv
+Saved backup predictions to: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\latest_predictions_world_1day.csv
+[Alert] Loading predictions...
+Loading formatted geocoded file...
+[Alert] Found 4370 critical detections.
+[Alert] No significant change detected vs last alert. Skipping.
+  Previous: 0 Extreme, 10 High, max FRP 93 MW
+  Current:  0 Extreme, 10 High, max FRP 93 MW
+======================================================================
+GLOBAL PROPHET-ONLY FIRE ACTIVITY FORECASTING
+======================================================================
+
+Current forecast_context.csv:
+Rows: 90
+Date range: 2026-03-17 → 2026-06-14
+
+Found latest_clean_firms.csv.
+Updating forecast context using latest clean FIRMS data...
+
+Daily rows extracted from latest_clean_firms.csv:
+          ds      y    avg_frp  max_frp  avg_confidence  night_fire_count
+0 2026-06-14  73735  11.774716  2222.84       60.313176              7673
+
+forecast_context.csv updated with live NASA data.
+Rows: 90
+Date range: 2026-03-17 → 2026-06-14
+
+Loading Prophet forecasting model...
+
+Prophet model loaded successfully.
+
+Forecast horizon: 7
+Operational forecasting model: Prophet only
+Output label: Global Fire Activity Forecast Index
+
+latest_forecast.csv created successfully.
+Saved to: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\latest_forecast.csv
+
+Forecast preview:
+          ds  ...               generated_at
+0 2026-06-15  ... 2026-06-14 22:05:37.818736
+1 2026-06-16  ... 2026-06-14 22:05:37.818736
+2 2026-06-17  ... 2026-06-14 22:05:37.818736
+3 2026-06-18  ... 2026-06-14 22:05:37.818736
+4 2026-06-19  ... 2026-06-14 22:05:37.818736
+5 2026-06-20  ... 2026-06-14 22:05:37.818736
+6 2026-06-21  ... 2026-06-14 22:05:37.818736
+
+[7 rows x 10 columns]
+
+DONE.
+Forecast context: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\forecast_context.csv
+Latest forecast: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\latest_forecast.csv
+Loading prediction CSV...
+Loaded 73735 rows.
+Rows after cleaning for DB: 73735
+Connecting to PostgreSQL...
+Connected successfully.
+Checking PostGIS extension...
+Clearing old data from fire_predictions...
+Inserting latest prediction batch into fire_predictions table...
+Data inserted successfully.
+Creating geometry column...
+Updating geometry values...
+Creating indexes...
+All latest world 1-day predictions successfully inserted into PostgreSQL/PostGIS.
+
+WORLD 1-DAY FIRE DETECTION + PROPHET FORECASTING PIPELINE
+Started at: 2026-06-14 22:04:24
+
+======================================================================
+STEP 1 - Download and preprocess NASA FIRMS world data
+======================================================================
+
+STEP 1 - Download and preprocess NASA FIRMS world data completed successfully.
+
+======================================================================
+STEP 2 - Run AI fire risk prediction and hotspot clustering
+======================================================================
+
+STEP 2 - Run AI fire risk prediction and hotspot clustering completed successfully.
+
+======================================================================
+STEP 3 - Send email alert for critical fire detections
+======================================================================
+
+STEP 3 - Send email alert for critical fire detections completed successfully.
+
+======================================================================
+STEP 4 - Generate 7-day global Prophet fire activity forecast
+======================================================================
+
+STEP 4 - Generate 7-day global Prophet fire activity forecast completed successfully.
+
+======================================================================
+STEP 5 - Insert latest fire predictions into PostgreSQL/PostGIS
+======================================================================
+
+STEP 5 - Insert latest fire predictions into PostgreSQL/PostGIS completed successfully.
+
+======================================================================
+Pipeline completed successfully.
+Finished at: 2026-06-14 22:05:53
+======================================================================
+
+Generated outputs:
+ - data/latest_predictions.csv
+ - data/latest_forecast.csv
+ - Email alert sent (if critical detections found)
+ - PostgreSQL table updated (if available)
+
+WORLD 1-DAY NASA FIRMS DOWNLOAD + PREPROCESSING
+Started at: 2026-06-15 17:03:29
+
+Downloading VIIRS_SNPP_NRT for whole world, last 1 day...
+VIIRS_SNPP_NRT: 32959 rows downloaded
+
+Downloading VIIRS_NOAA20_NRT for whole world, last 1 day...
+VIIRS_NOAA20_NRT: 30218 rows downloaded
+
+Downloading MODIS_NRT for whole world, last 1 day...
+MODIS_NRT: 5673 rows downloaded
+
+Final merged shape: (68850, 17)
+   latitude  longitude  bright_ti4  ...          source  brightness bright_t31
+0  54.60952  160.29723       367.0  ...  VIIRS_SNPP_NRT         NaN        NaN
+1  54.61064  160.29585       367.0  ...  VIIRS_SNPP_NRT         NaN        NaN
+2  54.61116  160.30154       367.0  ...  VIIRS_SNPP_NRT         NaN        NaN
+3  54.61227  160.30017       367.0  ...  VIIRS_SNPP_NRT         NaN        NaN
+4  54.61381  160.30426       367.0  ...  VIIRS_SNPP_NRT         NaN        NaN
+
+[5 rows x 17 columns]
+Index(['latitude', 'longitude', 'bright_ti4', 'scan', 'track', 'acq_date',
+       'acq_time', 'satellite', 'instrument', 'confidence', 'version',
+       'bright_ti5', 'frp', 'daynight', 'source', 'brightness', 'bright_t31'],
+      dtype='object')
+
+Saved raw data to: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\firms_raw_world_1day_20260615_1703.csv
+Saved latest raw data to: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\latest_raw_firms.csv
+
+Cleaned shape: (68850, 43)
+   latitude  longitude  ...  brightness_scan_ratio  track_scan_ratio
+0  54.60952  160.29723  ...             692.451524          1.264149
+1  54.61064  160.29585  ...             692.451524          1.264149
+2  54.61116  160.30154  ...             692.451524          1.264149
+3  54.61227  160.30017  ...             692.451524          1.264149
+4  54.61381  160.30426  ...             692.451524          1.264149
+
+[5 rows x 43 columns]
+Clean columns:
+['latitude', 'longitude', 'bright_ti4', 'scan', 'track', 'acq_date', 'acq_time', 'satellite', 'instrument', 'confidence', 'version', 'bright_ti5', 'frp', 'daynight', 'source', 'brightness', 'bright_t31', 'brightness_main', 'brightness_secondary', 'hour', 'minute', 'datetime', 'year', 'month', 'day', 'day_of_year', 'week_of_year', 'is_day', 'is_night', 'confidence_num', 'frp_log', 'frp_per_km2', 'brightness_anomaly', 'bright_t31_anomaly', 'satellite_code', 'season', 'frp_category', 'confidence_level', 'hour_sin', 'hour_cos', 'lat_lon_interaction', 'brightness_scan_ratio', 'track_scan_ratio']
+
+Saved clean data to: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\firms_clean_world_1day_20260615_1703.csv
+Saved latest clean data to: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\latest_clean_firms.csv
+
+NASA FIRMS preprocessing completed successfully.
+Finished at: 2026-06-15 17:04:02
+C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\scripts\prediction_pipeline.py:76: DtypeWarning: Columns (9) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(DATA_PATH)
+======================================================================
+WORLD 1-DAY PREDICTION PIPELINE
+======================================================================
+Using clean data: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\firms_clean_world_1day_20260615_1703.csv
+Input shape: (68850, 43)
+Feature matrix shape: (68850, 16)
+
+Loading XGBoost regressor...
+Predicting FRP...
+
+Loading XGBoost classifier...
+Predicting risk level...
+
+Running DBSCAN hotspot clustering...
+Using DBSCAN parameters: eps=0.00148302, min_samples=15
+
+Prediction + clustering done successfully.
+
+Output preview:
+   latitude  longitude    frp  ...  cluster_id prediction_scope  prediction_period
+0  54.60952  160.29723  55.92  ...           0            World              1 day
+1  54.61064  160.29585  36.25  ...           0            World              1 day
+2  54.61116  160.30154  72.91  ...           0            World              1 day
+3  54.61227  160.30017  36.25  ...           0            World              1 day
+4  54.61381  160.30426  51.34  ...           0            World              1 day
+
+[5 rows x 9 columns]
+
+Risk distribution:
+predicted_risk
+Moderate    55527
+High         9118
+Low          4102
+Extreme       103
+Name: count, dtype: int64
+
+Cluster summary:
+Total records: 68850
+Clusters found: 840
+Noise points: 28748
+
+Saved predictions to: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\latest_predictions.csv
+Saved backup predictions to: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\latest_predictions_world_1day.csv
+[Alert] Loading predictions...
+Loading formatted geocoded file...
+[Alert] Found 2961 critical detections.
+[Alert] Changes detected:
+  • New danger zones detected: Australia, United Arab Emirates, United States
+[Alert] Sending email to nisrinebourass27@gmail.com...
+[Alert] Email sent successfully.
+======================================================================
+GLOBAL PROPHET-ONLY FIRE ACTIVITY FORECASTING
+======================================================================
+
+Current forecast_context.csv:
+Rows: 90
+Date range: 2026-03-17 → 2026-06-14
+
+Found latest_clean_firms.csv.
+Updating forecast context using latest clean FIRMS data...
+
+Daily rows extracted from latest_clean_firms.csv:
+          ds      y    avg_frp  max_frp  avg_confidence  night_fire_count
+0 2026-06-15  68850  11.898247  2063.26       59.058112              3593
+
+forecast_context.csv updated with live NASA data.
+Rows: 90
+Date range: 2026-03-18 → 2026-06-15
+
+Loading Prophet forecasting model...
+
+Prophet model loaded successfully.
+
+Forecast horizon: 7
+Operational forecasting model: Prophet only
+Output label: Global Fire Activity Forecast Index
+
+latest_forecast.csv created successfully.
+Saved to: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\latest_forecast.csv
+
+Forecast preview:
+          ds  ...               generated_at
+0 2026-06-16  ... 2026-06-15 17:04:55.018108
+1 2026-06-17  ... 2026-06-15 17:04:55.018108
+2 2026-06-18  ... 2026-06-15 17:04:55.018108
+3 2026-06-19  ... 2026-06-15 17:04:55.018108
+4 2026-06-20  ... 2026-06-15 17:04:55.018108
+5 2026-06-21  ... 2026-06-15 17:04:55.018108
+6 2026-06-22  ... 2026-06-15 17:04:55.018108
+
+[7 rows x 10 columns]
+
+DONE.
+Forecast context: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\forecast_context.csv
+Latest forecast: C:\Users\HP\Desktop\PFE\AI-Forest-Fire-Detection\data\latest_forecast.csv
+Loading prediction CSV...
+Loaded 68850 rows.
+Rows after cleaning for DB: 68850
+Connecting to PostgreSQL...
+Connected successfully.
+Checking PostGIS extension...
+Clearing old data from fire_predictions...
+Inserting latest prediction batch into fire_predictions table...
+Data inserted successfully.
+Creating geometry column...
+Updating geometry values...
+Creating indexes...
+All latest world 1-day predictions successfully inserted into PostgreSQL/PostGIS.
+
+WORLD 1-DAY FIRE DETECTION + PROPHET FORECASTING PIPELINE
+Started at: 2026-06-15 17:03:27
+
+======================================================================
+STEP 1 - Download and preprocess NASA FIRMS world data
+======================================================================
+
+STEP 1 - Download and preprocess NASA FIRMS world data completed successfully.
+
+======================================================================
+STEP 2 - Run AI fire risk prediction and hotspot clustering
+======================================================================
+
+STEP 2 - Run AI fire risk prediction and hotspot clustering completed successfully.
+
+======================================================================
+STEP 3 - Send email alert for critical fire detections
+======================================================================
+
+STEP 3 - Send email alert for critical fire detections completed successfully.
+
+======================================================================
+STEP 4 - Generate 7-day global Prophet fire activity forecast
+======================================================================
+
+STEP 4 - Generate 7-day global Prophet fire activity forecast completed successfully.
+
+======================================================================
+STEP 5 - Insert latest fire predictions into PostgreSQL/PostGIS
+======================================================================
+
+STEP 5 - Insert latest fire predictions into PostgreSQL/PostGIS completed successfully.
+
+======================================================================
+Pipeline completed successfully.
+Finished at: 2026-06-15 17:05:13
+======================================================================
+
+Generated outputs:
+ - data/latest_predictions.csv
+ - data/latest_forecast.csv
+ - Email alert sent (if critical detections found)
+ - PostgreSQL table updated (if available)
+python: can't open file 'C:\\Users\\HP\\Desktop\\PFE\\AI-Forest-Fire-Detection\\scripts\\run_pipeline.py': [Errno 2] No such file or directory

@@ -1,0 +1,101 @@
+{
+    "model_name": "ForecastingGlobal",
+    "data_path": "C:\\Users\\Lenovo\\Desktop\\Projets\\PFE\\retrain\\Data\\prophetData_globalOP.csv",
+    "lookback": 60,
+    "forecast_horizon": 7,
+    "lstm_units": 64,
+    "epochs": 200,
+    "metric_targets": {
+        "prophet": {
+            "minimum": {
+                "MAE": 3.0,
+                "RMSE": 4.0,
+                "SMAPE": 90.0
+            },
+            "good": {
+                "MAE": 2.5,
+                "RMSE": 3.2,
+                "SMAPE": 75.0
+            },
+            "excellent": {
+                "MAE": 2.0,
+                "RMSE": 2.7,
+                "SMAPE": 60.0
+            }
+        },
+        "residual_lstm_final": {
+            "minimum": {
+                "MAE": 2.8,
+                "RMSE": 3.8,
+                "SMAPE": 80.0
+            },
+            "good": {
+                "MAE": 2.3,
+                "RMSE": 3.0,
+                "SMAPE": 65.0
+            },
+            "excellent": {
+                "MAE": 2.0,
+                "RMSE": 2.7,
+                "SMAPE": 50.0
+            }
+        }
+    },
+    "final_metrics": {
+        "label": "ForecastingGlobal Final",
+        "samples": 217,
+        "MAE": 2.3043132641805086,
+        "RMSE": 2.946643008418461,
+        "R2": -0.03788538134436292,
+        "SMAPE": 58.79228448722357,
+        "WAPE": 54.94900860738136,
+        "target_status": "Minimum acceptable",
+        "best_alpha": 0.03,
+        "best_clip": 3.0
+    },
+    "feature_cols": [
+        "residual",
+        "day_sin",
+        "day_cos",
+        "month_sin",
+        "month_cos",
+        "y_log",
+        "prophet_pred_log",
+        "avg_frp_log",
+        "max_frp_log",
+        "avg_confidence_log",
+        "night_fire_count_log",
+        "residual_roll7_mean",
+        "residual_roll14_mean",
+        "residual_roll30_mean",
+        "residual_roll7_std",
+        "residual_roll14_std",
+        "y_lag_1",
+        "residual_lag_1",
+        "prophet_lag_1",
+        "y_lag_2",
+        "residual_lag_2",
+        "prophet_lag_2",
+        "y_lag_3",
+        "residual_lag_3",
+        "prophet_lag_3",
+        "y_lag_7",
+        "residual_lag_7",
+        "prophet_lag_7",
+        "y_lag_14",
+        "residual_lag_14",
+        "prophet_lag_14",
+        "y_lag_21",
+        "residual_lag_21",
+        "prophet_lag_21",
+        "y_lag_30",
+        "residual_lag_30",
+        "prophet_lag_30"
+    ],
+    "models": {
+        "prophet": "ForecastingGlobal_prophet.joblib",
+        "lstm": "ForecastingGlobal_lstm.keras",
+        "scaler": "ForecastingGlobal_scaler.joblib",
+        "metadata": "ForecastingGlobal_metadata.joblib"
+    }
+}
