@@ -19,9 +19,8 @@ This transforms forest fire management from **reactive** to **proactive**, helpi
 | ------------------- | --------------------------------------------------------- |
 | **Nisrine Bourass** | Data preprocessing, data engineering, feature preparation |
 | **Manar Nebach**    | AI modeling, prediction system                            |
-|                     | Web dashboard, visualization, alerts system               |
-
-**Chaimae Tarre**  
+|   Nisrine Bourass   | Web dashboard, visualization, alerts system               |
+| **Manar Nebach**    | Embedded system Rassberry Pico                            |
 ---
 
 ## 🎯 **Objectives**
