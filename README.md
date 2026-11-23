@@ -1,10 +1,10 @@
 # AI-Forest-Fire-Detection
 AI-Forest-Fire-Detection PFE 
 
-# 🌲 **AI-Based Forest Fire Detection Using NASA Satellite Data**
+# **AI-Based Forest Fire Detection Using NASA Satellite Data**
 
 ### **Final Year Project –EST / AI Specialty – 2025–2026**
-## 🚀 **Project Overview**
+## **Project Overview**
 
 This project aims to build an **AI-powered early detection and prediction system** for forest fires using **NASA FIRMS satellite data** (MODIS & VIIRS).
 By combining **data engineering, geospatial analysis, and machine learning**, the system detects fire hotspots, analyzes their evolution, and predicts future risk levels.
@@ -13,7 +13,7 @@ This transforms forest fire management from **reactive** to **proactive**, helpi
 
 ---
 
-## 👩‍💻 **Team Members**
+## **Team Members**
 
 | Name                | Role                                                                                                     |
 | ------------------- | ---------------------------------------------------------------------------------------------------------|
@@ -21,7 +21,7 @@ This transforms forest fire management from **reactive** to **proactive**, helpi
 | **Manar Nebach**    | AI modeling, prediction system  , Embedded system Rassberry Pico                                         |
 ---
 
-## 🎯 **Objectives**
+## **Objectives**
 
 ### **General Objective**
 
@@ -49,7 +49,7 @@ Develop an AI system that detects and predicts forest fires in near real-time us
 
 ---
 
-## 🧰 **Tech Stack**
+## **Tech Stack**
 
 ### **Data & Geospatial**
 
@@ -70,7 +70,7 @@ Develop an AI system that detects and predicts forest fires in near real-time us
 
 ---
 
-## 🗂 **Repository Structure**
+## **Repository Structure**
 
 ```text
 AI-Forest-Fire-Detection/
@@ -97,7 +97,7 @@ AI-Forest-Fire-Detection/
 
 ---
 
-## 📌 **Main Features**
+## **Main Features**
 
 ### ✔ **1. Satellite Data Collection**
 
@@ -130,7 +130,7 @@ Automatic retrieval of MODIS & VIIRS fire data using NASA FIRMS API.
 
 ---
 
-## 📅 **Timeline**
+## **Timeline**
 
 The development is divided into 9 phases:
 
