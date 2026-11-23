@@ -39,7 +39,7 @@ Develop an AI system that detects and predicts forest fires in near real-time us
 
 ---
 
-## 🛰 **Data Sources**
+## **Data Sources**
 
 * **NASA FIRMS NRT3 / NRT4**
 
@@ -99,30 +99,30 @@ AI-Forest-Fire-Detection/
 
 ## **Main Features**
 
-### ✔ **1. Satellite Data Collection**
+###  **1. Satellite Data Collection**
 
 Automatic retrieval of MODIS & VIIRS fire data using NASA FIRMS API.
 
-### ✔ **2. Data Preprocessing**
+###  **2. Data Preprocessing**
 
 * Cleaning
 * Filtering low-confidence detections
 * Merging MODIS + VIIRS
 * Feature engineering (brightness, FRP categories, fire frequency…)
 
-### ✔ **3. Spatio-Temporal Analysis**
+###  **3. Spatio-Temporal Analysis**
 
 * Hotspot detection (DBSCAN)
 * Fire propagation tracking
 * Density maps
 * Regional stability index
 
-### ✔ **4. Prediction Models**
+###  **4. Prediction Models**
 
 * Fire risk classification
 * Time-series prediction (LSTM / ConvLSTM)
 
-### ✔ **5. Web Dashboard**
+###  **5. Web Dashboard**
 
 * Real-time fire detection map
 * Predictions visualization
