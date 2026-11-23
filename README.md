@@ -15,12 +15,10 @@ This transforms forest fire management from **reactive** to **proactive**, helpi
 
 ## 👩‍💻 **Team Members**
 
-| Name                | Role                                                      |
-| ------------------- | --------------------------------------------------------- |
-| **Nisrine Bourass** | Data preprocessing, data engineering, feature preparation |
-| **Manar Nebach**    | AI modeling, prediction system                            |
-| **Nisrine Bourass** | Web dashboard, visualization, alerts system               |
-| **Manar Nebach**    | Embedded system Rassberry Pico                            |
+| Name                | Role                                                                                                     |
+| ------------------- | ---------------------------------------------------------------------------------------------------------|
+| **Nisrine Bourass** | Data preprocessing, data engineering, feature preparation , Web dashboard, visualization, alerts system  |
+| **Manar Nebach**    | AI modeling, prediction system  , Embedded system Rassberry Pico                                         |
 ---
 
 ## 🎯 **Objectives**
